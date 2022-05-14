@@ -39,6 +39,9 @@
                         <RowDefinition Height="325*"/>
                     </Grid.RowDefinitions>
 
+                    <GridSplitter Grid.Column="0" Grid.RowSpan="2"
+                                  HorizontalAlignment="Right"
+                                  Width="4"/>
                     <Ellipse Grid.Column="1" Grid.Row="0" Fill="Red" Stroke="Blue" StrokeThickness="3"/>
                     <Rectangle Grid.Column="0" Margin="5 7" Grid.Row="0" Fill="Blue" Stroke="Red" StrokeThickness="3" RadiusX="5" RadiusY="7"/>
                 </Grid>
