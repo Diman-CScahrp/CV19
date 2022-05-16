@@ -22,6 +22,7 @@ namespace CV19.ViewModels
             set => Set(ref _Title, value);
         }
         #endregion
+
         #region Status
         private string _Status = "Готов!";
         public string Status
@@ -30,6 +31,7 @@ namespace CV19.ViewModels
             set => Set(ref _Status, value);
         }
         #endregion
+
         #region TestDataPoints
         /// <summary>
         /// Тестовый набор данных
@@ -42,8 +44,18 @@ namespace CV19.ViewModels
         }
         #endregion
 
+        #region
+        private int _SelectedPageIndex;
+        public int SelectedPageIndex
+        {
+            get => _SelectedPageIndex;
+            set => Set(ref _SelectedPageIndex, value);
+        }
+        #endregion
+
         #endregion
         #region Commands
+
         #region CloseApplicationCommand
         public ICommand CloseApplicationCommand { get; } 
         private void OnCloseApplicationCommandExecuted(object p)
@@ -52,12 +64,29 @@ namespace CV19.ViewModels
         }
         private bool OnCloseApplicationCommandCanExecute(object p) => true;
         #endregion
+
+        #region
+
+        public ICommand ChangeTabIndexCommand { get; }
+        private bool OnChangeTabIndexCommandCanExecute(object p) => _SelectedPageIndex >= 0;
+        private void OnChangeTabIndexCommandExecuted(object p)
+        {
+            if (p is null) return;
+
+            SelectedPageIndex += Convert.ToInt32(p);
+        }
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
         {
             #region Commands
+
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, OnCloseApplicationCommandCanExecute);
+            ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, OnChangeTabIndexCommandCanExecute);
+            
             #endregion
 
             var data_points = new List<DataPoint>((int)(360 / 0.1));
