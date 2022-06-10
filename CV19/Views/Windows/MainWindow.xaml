@@ -7,6 +7,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CV19.ViewModels"
         mc:Ignorable="d"
@@ -63,7 +64,16 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Группы">
-                        <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}" DisplayMemberPath="Name"/>
+                        <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="decanat:Group">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}" Margin="3 0 0 0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="{Binding SelectedGroup.Name, StringFormat='Студенты группы {0}', FallbackValue='Студенты', TargetNullValue='Группа не найдена'}">
                         <DataGrid GridLinesVisibility="Vertical" AlternatingRowBackground="LightGray" VerticalGridLinesBrush="DarkGray" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedGroup.Students}" Margin="5">
@@ -108,7 +118,76 @@
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Вкладка 2"/>
+            <TabItem Header="Разнородные данные" IsSelected="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <TextBlock Text="Элементы"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat=Студент: {0}}"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:String}">
+                                <TextBlock>
+                                    <Run Foreground="Red" FontWeight="Bold">Строка:</Run><TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:Int32}">
+                                <TextBlock>
+                                    <Run Foreground="Blue" FontWeight="Bold">Число:</Run><TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <ListBox Grid.Column="0" 
+                             ItemsSource="{Binding CompositeCollection}" 
+                             SelectedItem="{Binding SelectedCompositeValue}"/>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1">
+                        <GroupBox.Header>
+                            <TextBlock Text="Выбранный элемент"/>
+                        </GroupBox.Header>
+                        <GroupBox.Resources>
+                            <DataTemplate DataType="{x:Type decanat:Group}">
+                                <TextBlock Text="{Binding Name}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type decanat:Student}">
+                                <TextBlock Text="{Binding Name, StringFormat=Студент: {0}}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30"/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:String}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30">
+                                    <Run Foreground="Red" FontWeight="Bold">Строка:</Run><TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type sys:Int32}">
+                                <TextBlock HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="30">
+                                    <Run Foreground="Blue" FontWeight="Bold">Число:</Run><TextBlock Text="{Binding}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <ContentControl Content="{Binding SelectedCompositeValue}">
+                            
+                        </ContentControl>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Вкладка 3"/>
             <TabItem Header="Вкладка 4"/>
             <TabItem Header="Вкладка 5"/>
