@@ -17,6 +17,7 @@
     </Window.InputBindings>
     <Window.Resources>
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
+
     </Window.Resources>
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -67,13 +68,13 @@
                         <DockPanel>
                             <UniformGrid Margin="5 3" DockPanel.Dock="Bottom" Rows="1">
                                 <UniformGrid.Resources>
-                                    <Style x:Key="ButtonStyle" TargetType="Button">
+                                    <Style TargetType="Button">
                                         <Setter Property="Background" Value="White"/>
                                         <Setter Property="Padding" Value="3 5"/>
                                     </Style>
                                 </UniformGrid.Resources>
-                                <Button Style="{StaticResource ButtonStyle}" Command="{Binding CreateGroupCommand}" Content="Добавить" Margin="0 0 3 0"/>
-                                <Button Style="{StaticResource ButtonStyle}" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}" Content="Удалить"/>
+                                <Button Style="{StaticResource PrimaryButton}" Command="{Binding CreateGroupCommand}" Content="Добавить" Margin="0 0 3 0"/>
+                                <Button Style="{StaticResource DangerButton}" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}" Content="Удалить"/>
                             </UniformGrid>
                             <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
                                 <ListBox.ItemTemplate>
@@ -200,7 +201,9 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Вкладка 3"/>
+            <TabItem Header="Вкладка 3">
+                <Button Style="{StaticResource DangerButton}" Content="123" Padding="14 5" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"/>
+            </TabItem>
             <TabItem Header="Вкладка 4"/>
             <TabItem Header="Вкладка 5"/>
             <TabItem Header="Вкладка 6"/>
