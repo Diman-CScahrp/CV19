@@ -14,5 +14,6 @@
 
     <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
         <Setter Property="Background" Value="Red"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 </ResourceDictionary>
