@@ -55,7 +55,7 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedPageIndex}">
-            <TabItem Header="Студенты">
+            <TabItem Header="Студенты" IsSelected="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <!--<ColumnDefinition Width="3*"/>
@@ -64,16 +64,22 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Группы">
-                        <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="decanat:Group">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}"/>
-                                        <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}" Margin="3 0 0 0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <DockPanel>
+                            <UniformGrid Margin="5 3" DockPanel.Dock="Bottom" Rows="1">
+                                <Button Command="{Binding CreateGroupCommand}" Content="Добавить" Margin="0 0 3 0"/>
+                                <Button Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}" Content="Удалить"/>
+                            </UniformGrid>
+                            <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="decanat:Group">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}" Margin="3 0 0 0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="{Binding SelectedGroup.Name, StringFormat='Студенты группы {0}', FallbackValue='Студенты', TargetNullValue='Группа не найдена'}">
                         <DataGrid GridLinesVisibility="Vertical" AlternatingRowBackground="LightGray" VerticalGridLinesBrush="DarkGray" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedGroup.Students}" Margin="5">
@@ -118,7 +124,7 @@
                                     DataFieldY="YValue"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Разнородные данные" IsSelected="True">
+            <TabItem Header="Разнородные данные">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>

@@ -15,24 +15,18 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region CompositeCollection
+        public object[] CompositeCollection { get; }
+        #endregion
+
         #region SelectedCompositeValue
 
         private object _SelectedCompositeValue;
-
-        /// <summary>
-        /// Выбранные разнороднные данные
-        /// </summary>
         public object SelectedCompositeValue
         {
             get => _SelectedCompositeValue;
             set => Set(ref _SelectedCompositeValue, value);
         }
-
-        #endregion
-
-        #region CompositeCollection
-
-        public object[] CompositeCollection { get; }
 
         #endregion
 
@@ -99,6 +93,7 @@ namespace CV19.ViewModels
         #endregion
 
         #endregion
+
         #region Commands
 
         #region CloseApplicationCommand
@@ -110,7 +105,7 @@ namespace CV19.ViewModels
         private bool OnCloseApplicationCommandCanExecute(object p) => true;
         #endregion
 
-        #region
+        #region ChangeTabIndexCommand
 
         public ICommand ChangeTabIndexCommand { get; }
         private bool OnChangeTabIndexCommandCanExecute(object p) => _SelectedPageIndex >= 0;
@@ -123,6 +118,38 @@ namespace CV19.ViewModels
 
         #endregion
 
+        #region CreateGroup
+
+        public ICommand CreateGroupCommand { get; }
+        private bool CanCreateGroupCommandExecute(object p) => true;
+        private void OnCreateGroupCommandExecuted(object p)
+        {
+            var group_max_index = Groups.Count + 1;
+            var new_group = new Group()
+            {
+                Name = $"Группа {group_max_index}",
+                Students = new ObservableCollection<Student>()
+            };
+
+            Groups.Add(new_group);
+        }
+
+        #endregion
+
+        #region DeleteGroup
+        public ICommand DeleteGroupCommand { get; }
+        private bool CanDeleteGroupCommandExecute(object p) => p is Group group && Groups.Contains(group);
+        private void OnDeleteGroupCommandExecuted(object p)
+        {
+            if (!(p is Group group)) return;
+            var group_index = Groups.IndexOf(group);
+            Groups.Remove(group);
+            if (group_index < Groups.Count)
+                SelectedGroup = Groups[group_index];
+        }
+
+        #endregion
+
         #endregion
 
         public MainWindowViewModel()
@@ -131,7 +158,9 @@ namespace CV19.ViewModels
 
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, OnCloseApplicationCommandCanExecute);
             ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, OnChangeTabIndexCommandCanExecute);
-            
+            CreateGroupCommand = new LambdaCommand(OnCreateGroupCommandExecuted, CanCreateGroupCommandExecute);
+            DeleteGroupCommand = new LambdaCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
+
             #endregion
 
             var data_points = new List<DataPoint>((int)(360 / 0.1));
