@@ -66,15 +66,25 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Группы">
                         <DockPanel>
+                            <DockPanel.Resources>
+                                <CollectionViewSource x:Key="GroupsCollection"
+                                                      x:Name="GroupsCollection"
+                                                      Source="{Binding Groups}"
+                                                      Filter="GroupsCollection_OnFilter"
+                                                      />
+                            </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="5 3">
                                 <fa:ImageAwesome Height="12" Icon="Solid_Search" Margin="0 0 5 0"/>
-                                <TextBox/>
+                                <TextBox x:Name="GroupNameFilterText" TextChanged="OnGroupsFilterTextChanged"/>
                             </DockPanel>
                             <UniformGrid Margin="5 3" DockPanel.Dock="Bottom" Rows="1">
                                 <Button Padding="0 7" Style="{StaticResource CheckButtonStyle}" Command="{Binding CreateGroupCommand}" Margin="0 0 3 0" Content="Добавить"/>
                                 <Button Padding="0 7" Style="{StaticResource RemoveButtonStyle}" Command="{Binding DeleteGroupCommand}" CommandParameter="{Binding SelectedGroup}" Content="Удалить"/>
                             </UniformGrid>
-                            <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
+                            <ListBox SelectedIndex="0"  
+                                     SelectedItem="{Binding SelectedGroup}" 
+                                     Margin="5" 
+                                     ItemsSource="{Binding Source={StaticResource GroupsCollection}}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="decanat:Group" >
                                         <StackPanel Orientation="Horizontal">
