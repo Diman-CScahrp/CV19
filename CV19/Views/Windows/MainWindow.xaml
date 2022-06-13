@@ -72,22 +72,27 @@
                             </UniformGrid>
                             <ListBox SelectedIndex="0"  SelectedItem="{Binding SelectedGroup}" Margin="5" ItemsSource="{Binding Groups}">
                                 <ListBox.ItemTemplate>
-                                    <DataTemplate DataType="decanat:Group">
+                                    <DataTemplate DataType="decanat:Group" >
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock Text="{Binding Name}" Name="TextView"/>
                                             <TextBlock Text="{Binding Students.Count, StringFormat=[Студентов: {0}]}" Margin="3 0 0 0"/>
                                         </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Students.Count}" Value="0">
+                                                <Setter TargetName="TextView" Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </DockPanel>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="{Binding SelectedGroup.Name, StringFormat='Студенты группы {0}', FallbackValue='Студенты', TargetNullValue='Группа не найдена'}">
-                        <DataGrid GridLinesVisibility="Vertical" AlternatingRowBackground="LightGray" VerticalGridLinesBrush="DarkGray" CanUserAddRows="False" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedGroup.Students}" Margin="5">
+                        <DataGrid GridLinesVisibility="Vertical" AlternatingRowBackground="LightGray" VerticalGridLinesBrush="DarkGray" AutoGenerateColumns="False" ItemsSource="{Binding Path=SelectedGroup.Students}" Margin="5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn IsReadOnly="True" Header="Имя" Binding="{Binding Name}"/>
-                                <DataGridTextColumn IsReadOnly="True" Header="Фамилия" Binding="{Binding Surname}"/>
-                                <DataGridTextColumn IsReadOnly="True" Header="Отчество" Binding="{Binding Patronymic}"/>
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}"/>
+                                <DataGridTextColumn Header="Отчество" Binding="{Binding Patronymic}"/>
                                 <DataGridTemplateColumn Header="Дата рождения">
                                     <!--<DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate DataType="decanat:Student">
@@ -106,7 +111,7 @@
                                     </DataGridTemplateColumn.CellEditingTemplate>
                                 </DataGridTemplateColumn>
                                 <!--<DataGridTextColumn Header="Дата рождения" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>-->
-                                <DataGridTextColumn IsReadOnly="True" Header="Рейтинг" Binding="{Binding Rating}"/>
+                                <DataGridTextColumn Header="Рейтинг" Binding="{Binding Rating}"/>
                                 <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
