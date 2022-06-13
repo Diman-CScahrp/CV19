@@ -168,7 +168,7 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Вкладка 3">
+            <TabItem Header="Кнопка">
                 <Button Margin="20 40"
                         Style="{StaticResource CustomButtonStyle}"
                         Content="123" 
@@ -195,7 +195,7 @@
                                                          From="0" To="360"
                                                          Duration="0:0:1"
                                                          AutoReverse="True"/>
-                                        
+
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger.Actions>
@@ -223,9 +223,6 @@
                     </Button.Triggers>
                 </Button>
             </TabItem>
-            <TabItem Header="Вкладка 4"/>
-            <TabItem Header="Вкладка 5"/>
-            <TabItem Header="Вкладка 6"/>
         </TabControl>
     </DockPanel>
 </Window>
