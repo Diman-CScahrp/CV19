@@ -18,16 +18,27 @@ namespace CV19
 
         private void GroupsCollection_OnFilter(object sender, FilterEventArgs e)
         {
-            if (!(e.Item is Group group)) return;
-            if (group.Name is null) return;
-
+            Group group = e.Item as Group;
             var filter_text = GroupNameFilterText.Text;
-            if (filter_text.Length == 0) return;
+            if (group != null)
+            {
+                if (group.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase) ||
+                   (group.Description != null && group.Description.Contains(filter_text, StringComparison.OrdinalIgnoreCase))) 
+                    e.Accepted = true;
+                else 
+                    e.Accepted = false;
+            }
 
-            if(group.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
-            if(group.Description != null && group.Description.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            //if (!(e.Item is Group group)) return;
+            //if (group.Name is null) return;
 
-            e.Accepted = false;
+            //var filter_text = GroupNameFilterText.Text;
+            //if (filter_text.Length == 0) return;
+
+            //if(group.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+            //if(group.Description != null && group.Description.Contains(filter_text, StringComparison.OrdinalIgnoreCase)) return;
+
+            //e.Accepted = false;
         }
 
         private void OnGroupsFilterTextChanged(object sender, TextChangedEventArgs e)
