@@ -6,7 +6,7 @@ namespace CV19
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent(); вафыаыф
         }
     }
 }
