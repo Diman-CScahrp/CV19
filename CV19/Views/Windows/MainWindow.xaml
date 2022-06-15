@@ -265,6 +265,9 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="decanat:Student">
                                 <Border Padding="3" BorderBrush="Blue" BorderThickness="1" CornerRadius="3">
+                                    <Border.CacheMode>
+                                        <BitmapCache/>
+                                    </Border.CacheMode>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Surname}"/>
                                         <TextBlock Text="{Binding Name}"/>
