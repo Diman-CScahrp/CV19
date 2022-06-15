@@ -256,7 +256,15 @@
             <TabItem Header="Тестирование виртуализации">
                 <Grid>
                     <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
-                    <ListBox  ItemsSource="{Binding TestStudent}" HorizontalAlignment="Left" Width="200" Margin="30">
+                    <ListBox VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.IsContainerVirtualizable="True"
+                        ItemsSource="{Binding TestStudent}" HorizontalAlignment="Left" Width="200" Margin="30">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -266,7 +274,7 @@
                             <DataTemplate DataType="decanat:Student">
                                 <Border Padding="3" BorderBrush="Blue" BorderThickness="1" CornerRadius="3">
                                     <Border.CacheMode>
-                                        <BitmapCache/>
+                                        <BitmapCache RenderAtScale="5"/>
                                     </Border.CacheMode>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Surname}"/>
