@@ -5,8 +5,10 @@ using CV19.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace CV19.ViewModels
@@ -22,6 +24,52 @@ namespace CV19.ViewModels
                 Name = $"Имя {i}",
                 Surname= $"Фамилия {i}"
             });
+
+        #region SelectedGroupStudent
+        private readonly CollectionViewSource _SelectedGroupStudents = new CollectionViewSource();
+        private void OnStudentFiltred(object sender, FilterEventArgs e)
+        {
+            Student student = e.Item as Student;
+
+            if (student.Name is null || student.Surname is null || student.Patronymic is null)
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            string filter_text = _StudentFilterText;
+
+            if (string.IsNullOrWhiteSpace(filter_text))
+            {
+                return;
+            }
+            if (student != null)
+            {
+                if(student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase) ||
+                        student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase) ||
+                        student.Patronymic.Contains(filter_text, StringComparison.OrdinalIgnoreCase))
+                    e.Accepted = true;
+                else
+                    e.Accepted = false;
+            }
+        }
+        public ICollectionView SelectedGroupStudents => _SelectedGroupStudents?.View;
+        #endregion
+
+        #region StudentFilterText
+
+        private string _StudentFilterText;
+        public string StudentFilterText
+        {
+            get => _StudentFilterText;
+            set
+            {
+                if (!Set(ref _StudentFilterText, value)) return;
+                _SelectedGroupStudents.View.Refresh();
+            }
+        }
+
+        #endregion
 
         #region CompositeCollection
         public object[] CompositeCollection { get; }
@@ -48,7 +96,11 @@ namespace CV19.ViewModels
         public Group SelectedGroup
         {
             get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
+            set {
+                if (!Set(ref _SelectedGroup, value)) return;
+                _SelectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
         }
 
         #endregion
@@ -171,6 +223,7 @@ namespace CV19.ViewModels
 
             #endregion
 
+            #region other
             var data_points = new List<DataPoint>((int)(360 / 0.1));
             for (var x = 0d; x < 360; x += 0.1)
             {
@@ -205,6 +258,9 @@ namespace CV19.ViewModels
             data_list.Add(group.Students[0]);
 
             CompositeCollection = data_list.ToArray();
+            #endregion
+
+            _SelectedGroupStudents.Filter += OnStudentFiltred;
         }
     }
 }
