@@ -15,6 +15,14 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        public IEnumerable<Student> TestStudent =>
+            Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(i => new Student()
+            {
+                Name = $"Имя {i}",
+                Surname= $"Фамилия {i}"
+            });
+
         #region CompositeCollection
         public object[] CompositeCollection { get; }
         #endregion

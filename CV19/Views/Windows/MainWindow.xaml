@@ -253,6 +253,29 @@
                     </Button.Triggers>
                 </Button>
             </TabItem>
+            <TabItem Header="Тестирование виртуализации">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
+                    <ListBox  ItemsSource="{Binding TestStudent}" HorizontalAlignment="Left" Width="200" Margin="30">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="decanat:Student">
+                                <Border Padding="3" BorderBrush="Blue" BorderThickness="1" CornerRadius="3">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Patronymic}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
