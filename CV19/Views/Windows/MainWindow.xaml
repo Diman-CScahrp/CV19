@@ -84,7 +84,17 @@
                             <ListBox SelectedIndex="0"  
                                      SelectedItem="{Binding SelectedGroup}" 
                                      Margin="5" 
-                                     ItemsSource="{Binding Source={StaticResource GroupsCollection}}">
+                                     ItemsSource="{Binding Source={StaticResource GroupsCollection}}"
+                                     VirtualizingPanel.IsContainerVirtualizable="True"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling">
+
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="decanat:Group" >
                                         <StackPanel Orientation="Horizontal">
