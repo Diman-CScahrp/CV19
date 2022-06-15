@@ -7,6 +7,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CV19.ViewModels"
@@ -71,7 +72,14 @@
                                                       x:Name="GroupsCollection"
                                                       Source="{Binding Groups}"
                                                       Filter="GroupsCollection_OnFilter"
-                                                      />
+                                                      >
+                                    <CollectionViewSource.SortDescriptions>
+                                        <cm:SortDescription PropertyName="Name" Direction="Descending"/>
+                                    </CollectionViewSource.SortDescriptions>
+                                    <CollectionViewSource.GroupDescriptions>
+                                        <PropertyGroupDescription PropertyName="Students.Count"/>
+                                    </CollectionViewSource.GroupDescriptions>
+                                </CollectionViewSource>
                             </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="5 3">
                                 <fa:ImageAwesome Height="12" Icon="Solid_Search" Margin="0 0 5 0"/>
