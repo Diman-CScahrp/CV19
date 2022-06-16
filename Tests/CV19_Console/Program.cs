@@ -10,7 +10,7 @@ namespace CV19_Console
 {
     internal class Program
     {
-        private const string data_url = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+        private const string _DataSourceAddress = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
         static void Main(string[] args)
         {
             var russia = GetData()
@@ -21,7 +21,7 @@ namespace CV19_Console
         private static async Task<Stream> GetDataStream()
         {
             HttpClient client = new HttpClient();
-            var response = await client.GetAsync(data_url, HttpCompletionOption.ResponseHeadersRead);
+            var response = await client.GetAsync(_DataSourceAddress, HttpCompletionOption.ResponseHeadersRead);
             return await response.Content.ReadAsStreamAsync();
         }
         private static IEnumerable<string> GetDataLines()
