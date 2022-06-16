@@ -305,15 +305,15 @@
                         <GroupBox.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
                                                           ItemsSource="{Binding DirectoryItems}">
-                                <StackPanel Orientation="Horizontal">
-                                    <fa:ImageAwesome Height="12" Icon="Regular_Folder" Foreground="Yellow" Margin="0 0 5 0"/>
-                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0 3 0 0">
+                                    <fa:ImageAwesome Height="16" Icon="Regular_Folder" Foreground="Yellow" Margin="0 0 5 0"/>
+                                    <TextBlock FontSize="15" Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
                                 </StackPanel>
                             </HierarchicalDataTemplate>
                             <DataTemplate DataType="{x:Type vm:FileViewModel}">
                                 <StackPanel Orientation="Horizontal" ToolTip="{Binding CreationTime}">
-                                    <fa:ImageAwesome Height="12" Icon="Regular_File" Foreground="Blue" Margin="0 0 3 0"/>
-                                    <TextBlock Text="{Binding Name}"/>
+                                    <fa:ImageAwesome Height="16" Icon="Regular_File" Foreground="Blue" Margin="0 0 3 0"/>
+                                    <TextBlock FontSize="15" Text="{Binding Name}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </GroupBox.Resources>
