@@ -57,7 +57,7 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedPageIndex}">
-            <TabItem Header="Студенты" IsSelected="True">
+            <TabItem Header="Студенты" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <!--<ColumnDefinition Width="3*"/>
@@ -293,6 +293,48 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem IsSelected="True" Header="Фаловая система">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Grid.Column="0" Header="Директории" Margin="3">
+                        <!--<ListBox 
+                            ItemsSource="{Binding DiskRootDir.SubDirectories}"
+                            SelectedItem="{Binding SelectedDirectory}"
+                            SelectedIndex="0">
+                            
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="vm:DirectoryViewModel">
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>-->
+                        <TreeView ItemsSource="{Binding DiskRootDir.SubDirectories}">
+                            <TreeView.ItemTemplate>
+                                <!--<DataTemplate DataType="vm:DirectoryViewModel">
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                </DataTemplate>-->
+                                <HierarchicalDataTemplate DataType="vm:DirectoryViewModel"
+                                                          ItemsSource="{Binding SubDirectories}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:ImageAwesome Height="12" Icon="Regular_Folder" Foreground="Yellow" Margin="0 0 5 0"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Header="Файлы" Margin="3">
+                        <ListBox
+                            ItemsSource="{Binding SelectedDirectory.Files}"
+                            DisplayMemberPath="Name">
+                            
+                        </ListBox>
+                    </GroupBox>
                 </Grid>
             </TabItem>
         </TabControl>

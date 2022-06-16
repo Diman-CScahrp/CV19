@@ -17,6 +17,25 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region SelectedDirectiory
+
+        private DirectoryViewModel _SelectedDirectory;
+        /// <summary>
+        /// Текущая папка
+        /// </summary>
+        public DirectoryViewModel SelectedDirectory
+        {
+            get => _SelectedDirectory;
+            set => Set(ref _SelectedDirectory, value);
+        }
+
+        #endregion
+
+        #region DiskRootDir
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("C:\\");
+        #endregion
+
+        #region TestStudent
         public IEnumerable<Student> TestStudent =>
             Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
             .Select(i => new Student()
@@ -24,6 +43,7 @@ namespace CV19.ViewModels
                 Name = $"Имя {i}",
                 Surname= $"Фамилия {i}"
             });
+        #endregion
 
         #region SelectedGroupStudent
         private readonly CollectionViewSource _SelectedGroupStudents = new CollectionViewSource();
