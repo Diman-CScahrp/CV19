@@ -17,6 +17,9 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+
+        private readonly CountriesStatisticViewModel _ContriesStatistic;
+
         #region SelectedDirectiory
 
         private DirectoryViewModel _SelectedDirectory;
@@ -234,6 +237,8 @@ namespace CV19.ViewModels
 
         public MainWindowViewModel()
         {
+            _ContriesStatistic = new CountriesStatisticViewModel(this);
+
             #region Commands
 
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, OnCloseApplicationCommandCanExecute);
