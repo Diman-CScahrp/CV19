@@ -7,6 +7,7 @@
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:view="clr-namespace:CV19.Views"
         xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
@@ -57,6 +58,9 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedPageIndex}">
+            <TabItem Header="Статистика" IsSelected="True">
+                <view:CountriesStatisticsView/>
+            </TabItem>
             <TabItem Header="Студенты" >
                 <Grid>
                     <Grid.ColumnDefinitions>

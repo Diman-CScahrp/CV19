@@ -14,7 +14,6 @@ namespace CV19
 
             var service_test = new DataService();
             var countries = service_test.GetData().ToArray();
-
         }
     }
 }
