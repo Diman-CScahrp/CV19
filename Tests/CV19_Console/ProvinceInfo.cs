@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CV19_Console;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -11,5 +12,6 @@ namespace CV19.Models.CV19
         public string Name { get; set; }
         public Point Location { get; set; }
         public int[] Counts { get; set; }
+        public DateTime[] Dates { get; set; }
     }
 }

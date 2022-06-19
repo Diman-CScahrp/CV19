@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CV19.Models.CV19;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -10,55 +12,94 @@ namespace CV19_Console
 {
     internal class Program
     {
-        private const string _DataSourceAddress = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+        private const string url = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
         static void Main(string[] args)
         {
-            var russia = GetData()
-                .First(v => v.Country.Equals("Russia", StringComparison.OrdinalIgnoreCase));
-
-            Console.WriteLine(String.Join("\r\n", GetDates().Zip(russia.Counts, (date, count) => $"{date:dd.MM} - {count}")));
-        }
-        private static async Task<Stream> GetDataStream()
-        {
-            HttpClient client = new HttpClient();
-            var response = await client.GetAsync(_DataSourceAddress, HttpCompletionOption.ResponseHeadersRead);
-            return await response.Content.ReadAsStreamAsync();
-        }
-        private static IEnumerable<string> GetDataLines()
-        {
-            using var data_stream = GetDataStream().Result;
-            using var data_reader = new StreamReader(data_stream);
-
-            while (!data_reader.EndOfStream)
+            var g = GetData();
+            foreach (var item in g)
             {
-                var line = data_reader.ReadLine();
-                if (string.IsNullOrWhiteSpace(line)) continue;
-                line = line.Replace("Bonaire,", "Bonaire -");
-                line = line.Replace("Saint Helena,", "Saint Helena -");
-                yield return line.Replace("Korea,", "Korea -");
+                Console.WriteLine(item.Name);
+                Console.WriteLine("{");
+                foreach (var item2 in item.Provinces)
+                {
+                    Console.WriteLine("\t" + item2.Name + " | " + item2.Counts.Last() + " | " + item2.Dates.Last());
+                }
+                Console.WriteLine("}");
             }
         }
+        private static string DownloadData(string url)
+        {
+            HttpClient client = new HttpClient();
+            var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result;
+            return response.Content.ReadAsStringAsync().Result;
+        }
+        private static IEnumerable<string> GetDataLines() => DownloadData(url)
+            .Split('\n');
+
         private static DateTime[] GetDates() => GetDataLines()
             .First()
             .Split(',')
             .Skip(4)
-            .Select(s => DateTime.Parse(s, CultureInfo.InvariantCulture))
+            .Select(d => DateTime.Parse(d, CultureInfo.InvariantCulture))
             .ToArray();
-        
-        private static IEnumerable<(string Country, string Province, int[] Counts)> GetData()
+
+        private static IEnumerable<string[]> GetAllData() => GetDataLines()
+            .Skip(1)
+            .Select(s => s
+                .Replace("Korea," , "Korea -")
+                .Replace("Bonaire,", "Bonaire -")
+                .Replace("Saint Helena,", "Saint Helena -")
+                .Split(',')
+            );
+
+        private static IEnumerable<(string Counrty, ProvinceInfo Province)> GetCountriesData()
         {
-            var lines = GetDataLines()
-                .Skip(1)
-                .Select(line => line.Split(','));
+            var dates = GetDates();
+            var data = GetAllData();
 
-            foreach(var row in lines)
+
+            foreach (var row in data)
             {
-                var province = row[0].Trim();
-                var country = row[1].Trim(' ', '"');
-                var counts = row.Skip(4).Select(s => int.Parse(s)).ToArray();
+                if (row.Length < 3)
+                    yield break;
 
-                yield return (country, province, counts);
+                var _country = row[1].Trim(' ', '"');
+                var _province = string.IsNullOrWhiteSpace(row[0]) ? _country : row[0].Trim(' ', '"');
+                var _lat = 0; /*int.Parse(row[2], CultureInfo.InvariantCulture);*/
+                var _long = 0; /*int.Parse(row[3], CultureInfo.InvariantCulture);*/
+
+                var province = new ProvinceInfo
+                {
+                    Name = _province,
+                    Location = new Point(_lat, _long),
+                    Counts = row.Skip(4).Select(int.Parse).ToArray(),
+                    Dates = dates
+                };
+
+                yield return (_country, province);
             }
+        }
+        public static IEnumerable<CountryInfo> GetData()
+        {
+            var data = GetCountriesData();
+            List<CountryInfo> countries = new List<CountryInfo>();
+
+            foreach (var item in data)
+            {
+                if(countries.Count > 0 && item.Counrty == countries.Last().Name)
+                {
+                    countries.Last().Provinces.Add(item.Province);
+                }
+                else
+                {
+                    CountryInfo country = new CountryInfo();
+                    country.Name = item.Counrty;
+                    country.Provinces = new List<ProvinceInfo>();
+                    country.Provinces.Add(item.Province);
+                    countries.Add(country);
+                }
+            }
+            return countries;
         }
     }
 }
