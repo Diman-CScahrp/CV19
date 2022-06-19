@@ -18,17 +18,17 @@ namespace CV19.Services
             var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result;
             return response.Content.ReadAsStringAsync().Result;
         }
-        private static IEnumerable<string> GetDataLines() => DownloadData(url)
+        private IEnumerable<string> GetDataLines() => DownloadData(url)
             .Split('\n');
 
-        private static DateTime[] GetDates() => GetDataLines()
+        private DateTime[] GetDates() => GetDataLines()
             .First()
             .Split(',')
             .Skip(4)
             .Select(d => DateTime.Parse(d, CultureInfo.InvariantCulture))
             .ToArray();
 
-        private static IEnumerable<string[]> GetAllData() => GetDataLines()
+        private IEnumerable<string[]> GetAllData() => GetDataLines()
             .Skip(1)
             .Select(s => s
                 .Replace("Korea,", "Korea -")
@@ -37,7 +37,7 @@ namespace CV19.Services
                 .Split(',')
             );
 
-        private static IEnumerable<(string Counrty, ProvinceInfo Province)> GetCountriesData()
+        private IEnumerable<(string Counrty, ProvinceInfo Province)> GetCountriesData()
         {
             var dates = GetDates();
             var data = GetAllData();
@@ -50,8 +50,8 @@ namespace CV19.Services
 
                 var _country = row[1].Trim(' ', '"');
                 var _province = string.IsNullOrWhiteSpace(row[0]) ? _country : row[0].Trim(' ', '"');
-                var _lat = 0; /*int.Parse(row[2], CultureInfo.InvariantCulture);*/
-                var _long = 0; /*int.Parse(row[3], CultureInfo.InvariantCulture);*/
+                var _lat = double.Parse(string.IsNullOrWhiteSpace(row[2]) ? "0" : row[2], CultureInfo.InvariantCulture);
+                var _long = double.Parse(string.IsNullOrWhiteSpace(row[3]) ? "0" : row[3], CultureInfo.InvariantCulture);
 
                 var province = new ProvinceInfo
                 {
@@ -64,7 +64,7 @@ namespace CV19.Services
                 yield return (_country, province);
             }
         }
-        public static IEnumerable<CountryInfo> GetData()
+        public IEnumerable<CountryInfo> GetData()
         {
             var data = GetCountriesData();
             List<CountryInfo> countries = new List<CountryInfo>();

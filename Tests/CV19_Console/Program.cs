@@ -65,13 +65,13 @@ namespace CV19_Console
 
                 var _country = row[1].Trim(' ', '"');
                 var _province = string.IsNullOrWhiteSpace(row[0]) ? _country : row[0].Trim(' ', '"');
-                var _lat = 0; /*int.Parse(row[2], CultureInfo.InvariantCulture);*/
-                var _long = 0; /*int.Parse(row[3], CultureInfo.InvariantCulture);*/
+                //var _lat = double.Parse(row[2], CultureInfo.InvariantCulture);
+                //var _long = double.Parse(row[3], CultureInfo.InvariantCulture);
 
                 var province = new ProvinceInfo
                 {
                     Name = _province,
-                    Location = new Point(_lat, _long),
+                    Location = new Point(0, 0),
                     Counts = row.Skip(4).Select(int.Parse).ToArray(),
                     Dates = dates
                 };
