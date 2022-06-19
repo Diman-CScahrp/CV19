@@ -4,6 +4,7 @@ using CV19.Services;
 using CV19.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
@@ -41,6 +42,27 @@ namespace CV19.ViewModels
         }
 
         #endregion
+        public CountriesStatisticViewModel() : this(null)
+        {
+            if (!App.IsDesignMode)
+                throw new InvalidOperationException("Вызов конструктора, непредназначенного для использования пользователем");
+
+            //_Contries = Enumerable.Range(1, 10)
+            //    .Select(i => new CountryInfo
+            //    {
+            //        Name=$"Country {i}",
+            //        ProvincesCounts = Enumerable.Range(1, 10).Select(j => new PlaceInfo
+            //        {
+            //            Name=$"Province {i}",
+            //            Location = new System.Windows.Point(i, j),
+            //            Counts = Enumerable.Range(1, 10).Select(k => new ConfirmedCount 
+            //            { 
+            //                Date=DateTime.Now.Subtract(TimeSpan.FromDays(100-j)),
+            //                Count = k
+            //            }).ToArray()
+            //        }).ToArray()
+            //    }).ToArray();
+        }
         public CountriesStatisticViewModel(MainWindowViewModel MainModel)
         {
             this.MainModel = MainModel;

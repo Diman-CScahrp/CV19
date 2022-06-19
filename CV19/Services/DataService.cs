@@ -51,8 +51,8 @@ namespace CV19.Services
             {
                 var province = row[0].Trim();
                 var country = row[1].Trim(' ', '"');
-                var latitude = 0;
-                var longitude = 0;
+                var latitude = double.Parse(row[2].Replace('.', ',') == "" ? "0" : row[2].Replace('.', ','));
+                var longitude = double.Parse(row[3].Replace('.', ',') == "" ? "0" : row[3].Replace('.', ','));
                 var counts = row.Skip(4).Select(s => int.Parse(s)).ToArray();
 
                 yield return (province,country, (latitude, longitude), counts);

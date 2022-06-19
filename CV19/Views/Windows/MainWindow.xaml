@@ -59,7 +59,7 @@
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedPageIndex}">
             <TabItem Header="Статистика" IsSelected="True">
-                <view:CountriesStatisticsView/>
+                <view:CountriesStatisticsView DataContext="{Binding ContriesStatistic}"/>
             </TabItem>
             <TabItem Header="Студенты" >
                 <Grid>

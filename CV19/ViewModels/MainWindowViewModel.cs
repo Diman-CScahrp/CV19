@@ -18,7 +18,7 @@ namespace CV19.ViewModels
         #region Properties
 
 
-        private readonly CountriesStatisticViewModel _ContriesStatistic;
+        public CountriesStatisticViewModel ContriesStatistic { get; }
 
         #region SelectedDirectiory
 
@@ -237,7 +237,7 @@ namespace CV19.ViewModels
 
         public MainWindowViewModel()
         {
-            _ContriesStatistic = new CountriesStatisticViewModel(this);
+            ContriesStatistic = new CountriesStatisticViewModel(this);
 
             #region Commands
 
