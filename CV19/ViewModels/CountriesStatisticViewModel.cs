@@ -1,5 +1,5 @@
 ﻿using CV19.Infrastructure.Commands;
-using CV19.Models;
+using CV19.Models.CV19;
 using CV19.Services;
 using CV19.ViewModels.Base;
 using System;
@@ -14,7 +14,7 @@ namespace CV19.ViewModels
     {
         #region Properties
 
-        private DataService _DataService;
+        private DataCountriesService _DataService;
         private MainWindowViewModel MainModel { get; }
 
         #region Contries
@@ -27,6 +27,17 @@ namespace CV19.ViewModels
         {
             get => _Contries;
             private set => Set(ref _Contries, value);
+        }
+
+        #endregion
+
+        #region SelectedCountry
+
+        private CountryInfo _SelectedCountry;
+        public CountryInfo SelectedCountry
+        {
+            get => _SelectedCountry;
+            set => Set(ref _SelectedCountry, value);
         }
 
         #endregion
@@ -66,7 +77,7 @@ namespace CV19.ViewModels
         public CountriesStatisticViewModel(MainWindowViewModel MainModel)
         {
             this.MainModel = MainModel;
-            _DataService = new DataService();
+            _DataService = new DataCountriesService();
 
             #region Commands
 
