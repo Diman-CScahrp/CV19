@@ -13,6 +13,7 @@
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CV19.ViewModels"
         mc:Ignorable="d"
+        DataContext="{vm:MainWindowViewModel}"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding CloseApplicationCommand}"/>
@@ -21,9 +22,9 @@
         <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
 
     </Window.Resources>
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
