@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CV19.Views"
+             xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:c="clr-namespace:CV19.Infrastructure.Converters"
              xmlns:vm="clr-namespace:CV19.ViewModels"
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
@@ -62,10 +63,16 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <GridSplitter VerticalAlignment="Bottom" HorizontalAlignment="Stretch"/>
-                <Slider Grid.Row="0" Name="ValueSlider" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
-                <TextBox Margin="0 30 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
-                           Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource Ratio2}, UpdateSourceTrigger=PropertyChanged}" 
-                           Grid.Row="0"/>
+                <oxy:Plot Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" Title="Число" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash"/>
+                        <oxy:DateTimeAxis Position="Bottom" Title="Дата" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries StrokeThickness="2"
+                                    Color="Red"
+                                    ItemsSource="{Binding SelectedCountry.Points}"
+                                    DataFieldX="Date" DataFieldY="Count"/>
+                </oxy:Plot>
             </Grid>
         </GroupBox>
     </Grid>

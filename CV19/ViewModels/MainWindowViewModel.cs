@@ -156,17 +156,17 @@ namespace CV19.ViewModels
         }
         #endregion
 
-        #region TestDataPoints
-        /// <summary>
-        /// Тестовый набор данных
-        /// </summary>
-        private IEnumerable<DataPoint> _TestDataPoints;
-        public IEnumerable<DataPoint> TestDataPoints
-        {
-            get => _TestDataPoints;
-            set => Set(ref _TestDataPoints, value);
-        }
-        #endregion
+        //#region TestDataPoints
+        ///// <summary>
+        ///// Тестовый набор данных
+        ///// </summary>
+        //private IEnumerable<DataPoint> _TestDataPoints;
+        //public IEnumerable<DataPoint> TestDataPoints
+        //{
+        //    get => _TestDataPoints;
+        //    set => Set(ref _TestDataPoints, value);
+        //}
+        //#endregion
 
         #region SelectedPageIndex
         private int _SelectedPageIndex;
@@ -251,15 +251,15 @@ namespace CV19.ViewModels
             #endregion
 
             #region other
-            var data_points = new List<DataPoint>((int)(360 / 0.1));
-            for (var x = 0d; x < 360; x += 0.1)
-            {
-                const double to_rad = Math.PI / 180;
-                var y = Math.Sin(2 * Math.PI * x * to_rad);
+            //var data_points = new List<DataPoint>((int)(360 / 0.1));
+            //for (var x = 0d; x < 360; x += 0.1)
+            //{
+            //    const double to_rad = Math.PI / 180;
+            //    var y = Math.Sin(2 * Math.PI * x * to_rad);
 
-                data_points.Add(new DataPoint { XValue = x, YValue = y });
-            }
-            TestDataPoints = data_points;
+            //    data_points.Add(new DataPoint { XValue = x, YValue = y });
+            //}
+            //TestDataPoints = data_points;
 
             var student_index = 1;
             var students = Enumerable.Range(1, 10).Select(i => new Student
