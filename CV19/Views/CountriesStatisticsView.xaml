@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CV19.Views"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:m="clr-namespace:MapControl;assembly=MapControl.WPF"
              xmlns:c="clr-namespace:CV19.Infrastructure.Converters"
              xmlns:vm="clr-namespace:CV19.ViewModels"
              d:DataContext="{d:DesignInstance vm:CountriesStatisticViewModel, IsDesignTimeCreatable=True}"
@@ -73,6 +74,13 @@
                                     ItemsSource="{Binding SelectedCountry.Points}"
                                     DataFieldX="Date" DataFieldY="Count"/>
                 </oxy:Plot>
+                <m:Map Grid.Row="1" ZoomLevel="4" MaxZoomLevel="21" Center="{Binding SelectedCountry.Location, Converter={c:PointToMapLocation}}">
+                    <m:MapGraticule Opacity="0.3" Background="Transparent"/>
+                    <m:MapScale VerticalAlignment="Bottom" Margin="4" Opacity="1" Background="Transparent" />
+                    <m:Map.MapLayer>
+                        <m:MapTileLayer TileSource="http://tile.stamen.com/toner-lite/{z}/{x}/{y}.png"/>
+                    </m:Map.MapLayer>
+                </m:Map>
             </Grid>
         </GroupBox>
     </Grid>

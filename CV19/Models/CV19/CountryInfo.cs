@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace CV19.Models.CV19
 {
@@ -8,19 +9,25 @@ namespace CV19.Models.CV19
     {
         public string Name { get; set; }
         private int[] _Counts;
+        public Point Location
+        {
+            get
+            {
+                if (Provinces.Count <= 0)
+                    return default;
+
+                return Provinces[0].Location;
+            }
+            set
+            {
+                if (Provinces.Count > 0)
+                    Provinces[0].Location = value;
+            }
+        }
         public ConfirmedCount[] Points
         {
             get
             {
-                //List<ConfirmedCount> data = new List<ConfirmedCount>();
-                //for (int i = 0; i < Dates.Length; i++)
-                //{
-                //    data.Add(new ConfirmedCount()
-                //    {
-                //        Count = Counts[i],
-                //        Date = Dates[i]
-                //    });
-                //}
                 var data = Counts.Zip(Dates, (count, date) => new ConfirmedCount { Count = count, Date = date}).ToArray();
                 return data;
             }
