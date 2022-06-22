@@ -107,7 +107,7 @@
                                         <VirtualizingStackPanel />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
-                                
+
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="decanat:Group" >
                                         <StackPanel Orientation="Horizontal">
@@ -160,18 +160,6 @@
                         </DockPanel>
                     </GroupBox>
                 </Grid>
-            </TabItem>
-            <TabItem Header="График">
-                <oxy:Plot>
-                    <oxy:Plot.Axes>
-                        <oxy:LinearAxis Position="Left"/>
-                        <oxy:LinearAxis Position="Bottom"/>
-                    </oxy:Plot.Axes>
-                    <oxy:LineSeries Color="Red"
-                                    ItemsSource="{Binding TestDataPoints}"
-                                    DataFieldX="XValue"
-                                    DataFieldY="YValue"/>
-                </oxy:Plot>
             </TabItem>
             <TabItem Header="Разнородные данные">
                 <Grid>
