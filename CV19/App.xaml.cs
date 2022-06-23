@@ -1,11 +1,10 @@
-﻿using CV19.Models.CV19;
-using CV19.Services;
+﻿using CV19.Services;
 using CV19.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections;
-using System.Linq;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace CV19
@@ -40,5 +39,10 @@ namespace CV19
             services.AddSingleton<DataCountriesService>();
             services.AddSingleton<CountriesStatisticsView>();
         }
+        public static string CurrentDirectory => IsDesignMode 
+            ? Path.GetDirectoryName(GetSourceCodePath())
+            : Environment.CurrentDirectory;
+
+        private static string GetSourceCodePath([CallerFilePath] string Path = null) => Path;
     }
 }

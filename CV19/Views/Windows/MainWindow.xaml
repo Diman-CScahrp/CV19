@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CV19"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:sysmtem="clr-namespace:Microsoft.Extensions.Configuration.EnvironmentVariables;assembly=Microsoft.Extensions.Configuration.EnvironmentVariables"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:view="clr-namespace:CV19.Views"
         xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
@@ -331,6 +332,8 @@
                         </ListBox>
                     </GroupBox>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Отладка">
             </TabItem>
         </TabControl>
     </DockPanel>
