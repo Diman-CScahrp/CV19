@@ -20,7 +20,7 @@ namespace CV19.ViewModels
         #region Properties
 
 
-        public CountriesStatisticViewModel ContriesStatistic { get; }
+        public CountriesStatisticViewModel CountriesStatistic { get; set; }
 
         #region SelectedDirectiory
 
@@ -237,9 +237,10 @@ namespace CV19.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(CountriesStatisticViewModel statistic)
         {
-            ContriesStatistic = new CountriesStatisticViewModel(this);
+            CountriesStatistic = statistic;
+            statistic.MainModel = this;
 
             #region Commands
 

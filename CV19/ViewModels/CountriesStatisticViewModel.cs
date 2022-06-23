@@ -15,7 +15,7 @@ namespace CV19.ViewModels
         #region Properties
 
         private DataCountriesService _DataService;
-        private MainWindowViewModel MainModel { get; }
+        public MainWindowViewModel MainModel { get; internal set; }
 
         #region Contries
 
@@ -53,37 +53,19 @@ namespace CV19.ViewModels
         }
 
         #endregion
-        public CountriesStatisticViewModel() : this(null)
+        public CountriesStatisticViewModel(DataCountriesService DataService)
         {
-            if (!App.IsDesignMode)
-                throw new InvalidOperationException("Вызов конструктора, непредназначенного для использования пользователем");
-
-            //_Contries = Enumerable.Range(1, 10)
-            //    .Select(i => new CountryInfo
-            //    {
-            //        Name=$"Country {i}",
-            //        ProvincesCounts = Enumerable.Range(1, 10).Select(j => new PlaceInfo
-            //        {
-            //            Name=$"Province {i}",
-            //            Location = new System.Windows.Point(i, j),
-            //            Counts = Enumerable.Range(1, 10).Select(k => new ConfirmedCount 
-            //            { 
-            //                Date=DateTime.Now.Subtract(TimeSpan.FromDays(100-j)),
-            //                Count = k
-            //            }).ToArray()
-            //        }).ToArray()
-            //    }).ToArray();
-        }
-        public CountriesStatisticViewModel(MainWindowViewModel MainModel)
-        {
-            this.MainModel = MainModel;
-            _DataService = new DataCountriesService();
+            _DataService = DataService;
 
             #region Commands
 
             RefreshDataCommand = new LambdaCommand(OnRefreshDataCommandExecuted);
 
             #endregion
+        }
+        public CountriesStatisticViewModel()
+        {
+
         }
     }
 }

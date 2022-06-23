@@ -1,5 +1,5 @@
 ﻿using CV19.Services;
-using CV19.Views;
+using CV19.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -37,9 +37,11 @@ namespace CV19
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
             services.AddSingleton<DataCountriesService>();
-            services.AddSingleton<CountriesStatisticsView>();
+
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<CountriesStatisticViewModel>();
         }
-        public static string CurrentDirectory => IsDesignMode 
+        public static string CurrentDirectory => IsDesignMode
             ? Path.GetDirectoryName(GetSourceCodePath())
             : Environment.CurrentDirectory;
 

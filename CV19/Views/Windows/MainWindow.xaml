@@ -14,7 +14,7 @@
         xmlns:cmd="clr-namespace:CV19.Infrastructure.Commands"
         xmlns:vm="clr-namespace:CV19.ViewModels"
         mc:Ignorable="d"
-        DataContext="{vm:MainWindowViewModel}"
+        DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding CloseApplicationCommand}"/>
@@ -61,7 +61,7 @@
         </StatusBar>
         <TabControl SelectedIndex="{Binding SelectedPageIndex}">
             <TabItem Header="Статистика" IsSelected="True">
-                <view:CountriesStatisticsView DataContext="{Binding ContriesStatistic}"/>
+                <view:CountriesStatisticsView DataContext="{Binding Path=CountriesStatistic}"/>
             </TabItem>
             <TabItem Header="Студенты" >
                 <Grid>
