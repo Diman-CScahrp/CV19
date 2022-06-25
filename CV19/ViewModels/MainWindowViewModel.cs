@@ -19,7 +19,16 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region FuelCount
 
+        private double _FuelCount;
+        public double FuelCount
+        {
+            get => _FuelCount;
+            set => Set(ref _FuelCount, value);
+        }
+
+        #endregion
         public CountriesStatisticViewModel CountriesStatistic { get; set; }
 
         #region SelectedDirectiory

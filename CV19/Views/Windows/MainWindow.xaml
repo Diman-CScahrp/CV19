@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV19"
+        xmlns:components="clr-namespace:CV19.Components"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:sysmtem="clr-namespace:Microsoft.Extensions.Configuration.EnvironmentVariables;assembly=Microsoft.Extensions.Configuration.EnvironmentVariables"
@@ -334,6 +335,14 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Отладка">
+                <Grid>
+                    <components:GaugeIndicator VerticalAlignment="Top" 
+                                               HorizontalAlignment="Left" 
+                                               Width="100" Height="100"
+                                               Value="{Binding FuelCount}"/>
+                    <Slider VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="90 0 0 0" Height="30"
+                            Value="{Binding FuelCount}" Minimum="-20" Maximum="120"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </DockPanel>
