@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV19"
+        xmlns:conv="clr-namespace:CV19.Infrastructure.Converters"
         xmlns:components="clr-namespace:CV19.Components"
         xmlns:decanat="clr-namespace:CV19.Models.Decanat"
         xmlns:fa="http://schemas.fontawesome.com/icons/"
@@ -336,12 +337,23 @@
             </TabItem>
             <TabItem Header="Отладка">
                 <Grid>
+                    <Grid.Resources>
+                        <conv:ParametricAddValueConverter x:Key="Mult" Value="{Binding Coefficient}"/>
+                    </Grid.Resources>
                     <components:GaugeIndicator VerticalAlignment="Top" 
                                                HorizontalAlignment="Left" 
-                                               Width="100" Height="100"
-                                               Value="{Binding FuelCount}"/>
+                                               Width="100" Height="100">
+                        <components:GaugeIndicator.Value>
+                            <Binding Path="FuelCount" Converter="{StaticResource Mult}"/>
+                        </components:GaugeIndicator.Value>
+                    </components:GaugeIndicator>
                     <Slider VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="90 0 0 0" Height="30"
-                            Value="{Binding FuelCount}" Minimum="-20" Maximum="120"/>
+                            Value="{Binding FuelCount}" Minimum="0" Maximum="100"
+                            ToolTip="{Binding FuelCount}"/>
+
+                    <Slider VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="90 40 0 0" Height="30"
+                            Value="{Binding Coefficient}" Minimum="-10" Maximum="10" SmallChange="0.1"
+                            ToolTip="{Binding Coefficient}"/>
                 </Grid>
             </TabItem>
         </TabControl>

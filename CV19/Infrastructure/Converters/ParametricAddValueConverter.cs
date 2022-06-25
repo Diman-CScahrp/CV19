@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace CV19.Infrastructure.Converters
 {
-    internal class ParametricAddValueConverter : DependencyObject, IValueConverter
+    internal class ParametricAddValueConverter : Freezable, IValueConverter
     {
         #region Value
         public static readonly DependencyProperty ValueProperty =
@@ -14,7 +14,7 @@ namespace CV19.Infrastructure.Converters
                 typeof(double),
                 typeof(ParametricAddValueConverter),
                 new PropertyMetadata(
-                    default(double)
+                    1.0
                     ));
         public double Value
         {
@@ -25,14 +25,17 @@ namespace CV19.Infrastructure.Converters
         public object Convert(object v, Type t, object p, CultureInfo c)
         {
             var value = System.Convert.ToDouble(v, c);
-            return value + Value;
+            return value * Value;
         }
 
         public object ConvertBack(object v, Type t, object p, CultureInfo c)
         {
             var value = System.Convert.ToDouble(v, c);
 
-            return value - Value;
+            return value / Value;
         }
+
+        protected override Freezable CreateInstanceCore() =>
+            new ParametricAddValueConverter() { Value = this.Value };
     }
 }

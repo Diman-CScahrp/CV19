@@ -19,6 +19,18 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region Coefficient
+
+        private double _Coefficient = 1;
+
+        public double Coefficient
+        {
+            get => _Coefficient;
+            set => Set(ref _Coefficient, value);
+        }
+
+        #endregion
+
         #region FuelCount
 
         private double _FuelCount;
