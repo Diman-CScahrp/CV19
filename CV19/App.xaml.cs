@@ -37,7 +37,7 @@ namespace CV19
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            services.AddTransient<IDataService, DataCountriesService>();
+            services.AddSingleton<IDataService, DataCountriesService>();
 
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<CountriesStatisticViewModel>();
