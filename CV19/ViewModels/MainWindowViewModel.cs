@@ -5,15 +5,96 @@ using CV19.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace CV19.ViewModels
 {
+    [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
     internal class MainWindowViewModel : ViewModel
     {
         #region Properties
+
+
+        public CountriesStatisticViewModel CountriesStatistic { get; set; }
+
+        #region SelectedDirectiory
+
+        private DirectoryViewModel _SelectedDirectory;
+        /// <summary>
+        /// Текущая папка
+        /// </summary>
+        public DirectoryViewModel SelectedDirectory
+        {
+            get => _SelectedDirectory;
+            set => Set(ref _SelectedDirectory, value);
+        }
+
+        #endregion
+
+        #region DiskRootDir
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("C:\\");
+        #endregion
+
+        #region TestStudent
+        public IEnumerable<Student> TestStudent =>
+            Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(i => new Student()
+            {
+                Name = $"Имя {i}",
+                Surname= $"Фамилия {i}"
+            });
+        #endregion
+
+        #region SelectedGroupStudent
+        private readonly CollectionViewSource _SelectedGroupStudents = new CollectionViewSource();
+        private void OnStudentFiltred(object sender, FilterEventArgs e)
+        {
+            Student student = e.Item as Student;
+
+            if (student.Name is null || student.Surname is null || student.Patronymic is null)
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            string filter_text = _StudentFilterText;
+
+            if (string.IsNullOrWhiteSpace(filter_text))
+            {
+                return;
+            }
+            if (student != null)
+            {
+                if(student.Name.Contains(filter_text, StringComparison.OrdinalIgnoreCase) ||
+                        student.Surname.Contains(filter_text, StringComparison.OrdinalIgnoreCase) ||
+                        student.Patronymic.Contains(filter_text, StringComparison.OrdinalIgnoreCase))
+                    e.Accepted = true;
+                else
+                    e.Accepted = false;
+            }
+        }
+        public ICollectionView SelectedGroupStudents => _SelectedGroupStudents?.View;
+        #endregion
+
+        #region StudentFilterText
+
+        private string _StudentFilterText;
+        public string StudentFilterText
+        {
+            get => _StudentFilterText;
+            set
+            {
+                if (!Set(ref _StudentFilterText, value)) return;
+                _SelectedGroupStudents.View.Refresh();
+            }
+        }
+
+        #endregion
 
         #region CompositeCollection
         public object[] CompositeCollection { get; }
@@ -40,7 +121,11 @@ namespace CV19.ViewModels
         public Group SelectedGroup
         {
             get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
+            set {
+                if (!Set(ref _SelectedGroup, value)) return;
+                _SelectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
         }
 
         #endregion
@@ -71,17 +156,17 @@ namespace CV19.ViewModels
         }
         #endregion
 
-        #region TestDataPoints
-        /// <summary>
-        /// Тестовый набор данных
-        /// </summary>
-        private IEnumerable<DataPoint> _TestDataPoints;
-        public IEnumerable<DataPoint> TestDataPoints
-        {
-            get => _TestDataPoints;
-            set => Set(ref _TestDataPoints, value);
-        }
-        #endregion
+        //#region TestDataPoints
+        ///// <summary>
+        ///// Тестовый набор данных
+        ///// </summary>
+        //private IEnumerable<DataPoint> _TestDataPoints;
+        //public IEnumerable<DataPoint> TestDataPoints
+        //{
+        //    get => _TestDataPoints;
+        //    set => Set(ref _TestDataPoints, value);
+        //}
+        //#endregion
 
         #region SelectedPageIndex
         private int _SelectedPageIndex;
@@ -152,8 +237,11 @@ namespace CV19.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(CountriesStatisticViewModel statistic)
         {
+            CountriesStatistic = statistic;
+            statistic.MainModel = this;
+
             #region Commands
 
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, OnCloseApplicationCommandCanExecute);
@@ -163,15 +251,16 @@ namespace CV19.ViewModels
 
             #endregion
 
-            var data_points = new List<DataPoint>((int)(360 / 0.1));
-            for (var x = 0d; x < 360; x += 0.1)
-            {
-                const double to_rad = Math.PI / 180;
-                var y = Math.Sin(2 * Math.PI * x * to_rad);
+            #region other
+            //var data_points = new List<DataPoint>((int)(360 / 0.1));
+            //for (var x = 0d; x < 360; x += 0.1)
+            //{
+            //    const double to_rad = Math.PI / 180;
+            //    var y = Math.Sin(2 * Math.PI * x * to_rad);
 
-                data_points.Add(new DataPoint { XValue = x, YValue = y });
-            }
-            TestDataPoints = data_points;
+            //    data_points.Add(new DataPoint { XValue = x, YValue = y });
+            //}
+            //TestDataPoints = data_points;
 
             var student_index = 1;
             var students = Enumerable.Range(1, 10).Select(i => new Student
@@ -197,6 +286,9 @@ namespace CV19.ViewModels
             data_list.Add(group.Students[0]);
 
             CompositeCollection = data_list.ToArray();
+            #endregion
+
+            _SelectedGroupStudents.Filter += OnStudentFiltred;
         }
     }
 }

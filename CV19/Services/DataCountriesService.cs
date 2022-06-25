@@ -1,58 +1,44 @@
 ﻿using CV19.Models.CV19;
+using CV19.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
+using System.Windows;
 
-namespace CV19_Console
+namespace CV19.Services
 {
-    internal class Program
+    internal class DataCountriesService : IDataService
     {
         private const string url = @"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
-        static void Main(string[] args)
-        {
-            var g = GetData();
-            foreach (var item in g)
-            {
-                Console.WriteLine(item.Name);
-                Console.WriteLine("{");
-                foreach (var item2 in item.Provinces)
-                {
-                    Console.WriteLine("\t" + item2.Name + " | " + item2.Counts.Last() + " | " + item2.Dates.Last());
-                }
-                Console.WriteLine("}");
-            }
-        }
+
         private static string DownloadData(string url)
         {
             HttpClient client = new HttpClient();
             var response = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead).Result;
             return response.Content.ReadAsStringAsync().Result;
         }
-        private static IEnumerable<string> GetDataLines() => DownloadData(url)
+        private IEnumerable<string> GetDataLines() => DownloadData(url)
             .Split('\n');
 
-        private static DateTime[] GetDates() => GetDataLines()
+        private DateTime[] GetDates() => GetDataLines()
             .First()
             .Split(',')
             .Skip(4)
             .Select(d => DateTime.Parse(d, CultureInfo.InvariantCulture))
             .ToArray();
 
-        private static IEnumerable<string[]> GetAllData() => GetDataLines()
+        private IEnumerable<string[]> GetAllData() => GetDataLines()
             .Skip(1)
             .Select(s => s
-                .Replace("Korea," , "Korea -")
+                .Replace("Korea,", "Korea -")
                 .Replace("Bonaire,", "Bonaire -")
                 .Replace("Saint Helena,", "Saint Helena -")
                 .Split(',')
             );
 
-        private static IEnumerable<(string Counrty, ProvinceInfo Province)> GetCountriesData()
+        private IEnumerable<(string Counrty, ProvinceInfo Province)> GetCountriesData()
         {
             var dates = GetDates();
             var data = GetAllData();
@@ -65,13 +51,13 @@ namespace CV19_Console
 
                 var _country = row[1].Trim(' ', '"');
                 var _province = string.IsNullOrWhiteSpace(row[0]) ? _country : row[0].Trim(' ', '"');
-                //var _lat = double.Parse(row[2], CultureInfo.InvariantCulture);
-                //var _long = double.Parse(row[3], CultureInfo.InvariantCulture);
+                var _lat = double.Parse(string.IsNullOrWhiteSpace(row[2]) ? "0" : row[2], CultureInfo.InvariantCulture);
+                var _long = double.Parse(string.IsNullOrWhiteSpace(row[3]) ? "0" : row[3], CultureInfo.InvariantCulture);
 
                 var province = new ProvinceInfo
                 {
                     Name = _province,
-                    Location = new Point(0, 0),
+                    Location = new Point(_lat, _long),
                     Counts = row.Skip(4).Select(int.Parse).ToArray(),
                     Dates = dates
                 };
@@ -79,14 +65,14 @@ namespace CV19_Console
                 yield return (_country, province);
             }
         }
-        public static IEnumerable<CountryInfo> GetData()
+        public IEnumerable<CountryInfo> GetData()
         {
             var data = GetCountriesData();
             List<CountryInfo> countries = new List<CountryInfo>();
 
             foreach (var item in data)
             {
-                if(countries.Count > 0 && item.Counrty == countries.Last().Name)
+                if (countries.Count > 0 && item.Counrty == countries.Last().Name)
                 {
                     countries.Last().Provinces.Add(item.Province);
                 }
