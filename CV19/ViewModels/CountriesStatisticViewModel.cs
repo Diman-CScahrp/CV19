@@ -1,7 +1,9 @@
 ﻿using CV19.Infrastructure.Commands;
 using CV19.Models.CV19;
 using CV19.Services;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace CV19.ViewModels
     {
         #region Properties
 
-        private DataCountriesService _DataService;
+        private IDataService _DataService;
         public MainWindowViewModel MainModel { get; internal set; }
 
         #region Contries
@@ -53,19 +55,18 @@ namespace CV19.ViewModels
         }
 
         #endregion
-        public CountriesStatisticViewModel(DataCountriesService DataService)
+        public CountriesStatisticViewModel(IDataService DataService)
         {
             _DataService = DataService;
+
+            var data = App.Host.Services.GetRequiredService<IDataService>();
+            
 
             #region Commands
 
             RefreshDataCommand = new LambdaCommand(OnRefreshDataCommandExecuted);
 
             #endregion
-        }
-        public CountriesStatisticViewModel()
-        {
-
         }
     }
 }

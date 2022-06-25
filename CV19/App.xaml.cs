@@ -1,4 +1,5 @@
 ﻿using CV19.Services;
+using CV19.Services.Interfaces;
 using CV19.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +10,7 @@ using System.Windows;
 
 namespace CV19
 {
-    public partial class App : Application
+    public partial class App
     {
         public static bool IsDesignMode { get; private set; } = true;
 
@@ -36,7 +37,7 @@ namespace CV19
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
         {
-            services.AddSingleton<DataCountriesService>();
+            services.AddTransient<IDataService, DataCountriesService>();
 
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<CountriesStatisticViewModel>();
