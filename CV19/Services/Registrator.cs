@@ -7,7 +7,7 @@ namespace CV19.Services
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
-
+            services.AddSingleton<IAsyncDataService, AsyncDataService>();
             services.AddSingleton<IDataService, DataCountriesService>();
             return services;
         }

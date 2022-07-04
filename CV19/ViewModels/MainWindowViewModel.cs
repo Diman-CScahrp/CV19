@@ -1,6 +1,7 @@
 ﻿using CV19.Infrastructure.Commands;
 using CV19.Models;
 using CV19.Models.Decanat;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,18 @@ namespace CV19.ViewModels
         }
 
         #endregion
+
+        #region AsyncData
+
+        private readonly IAsyncDataService _AsyncData;
+
+        #endregion
+
+        #region CountriesStatistic
+
         public CountriesStatisticViewModel CountriesStatistic { get; set; }
+
+        #endregion
 
         #region SelectedDirectiory
 
@@ -258,9 +270,10 @@ namespace CV19.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(CountriesStatisticViewModel statistic)
+        public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService AsyncData)
         {
             CountriesStatistic = statistic;
+            _AsyncData = AsyncData;
             statistic.MainModel = this;
 
             #region Commands
