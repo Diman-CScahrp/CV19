@@ -20,6 +20,17 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region DataValue
+
+        private string _DataValue;
+        public string DataValue
+        {
+            get => _DataValue;
+            private set => Set(ref _DataValue, value);
+        }
+
+        #endregion
+
         #region Coefficient
 
         private double _Coefficient = 1;
@@ -214,6 +225,25 @@ namespace CV19.ViewModels
 
         #region Commands
 
+        #region StartProcessCommand
+        public ICommand StartProcessCommand { get; }
+        private static bool CanStartProcessCommandExecute(object p) => true;
+        private void OnStartProcessCommandExecuted(object p)
+        {
+            DataValue = _AsyncData.GetResult(DateTime.Now);
+        }
+        #endregion
+
+        #region StopProcessCommand
+        public ICommand StopProcessCommand { get; }
+        private static bool CanStopProcessCommandExecute(object p) => true;
+        private void OnStopProcessCommandExecuted(object p)
+        {
+
+        }
+        #endregion
+
+
         #region CloseApplicationCommand
         public ICommand CloseApplicationCommand { get; } 
         private void OnCloseApplicationCommandExecuted(object p)
@@ -282,6 +312,8 @@ namespace CV19.ViewModels
             ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, OnChangeTabIndexCommandCanExecute);
             CreateGroupCommand = new LambdaCommand(OnCreateGroupCommandExecuted, CanCreateGroupCommandExecute);
             DeleteGroupCommand = new LambdaCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
+            StartProcessCommand = new LambdaCommand(OnStartProcessCommandExecuted, CanStartProcessCommandExecute);
+            StopProcessCommand = new LambdaCommand(OnStopProcessCommandExecuted, CanStopProcessCommandExecute);
 
             #endregion
 

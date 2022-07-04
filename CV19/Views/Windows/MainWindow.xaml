@@ -356,6 +356,21 @@
                             ToolTip="{Binding Coefficient}"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Отладка2">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Margin="5 5 5 0">
+                        <UniformGrid DockPanel.Dock="Left" Rows="1" HorizontalAlignment="Left">
+                            <Button Command="{Binding StartProcessCommand}" Margin="5" Padding="20, 5" Content="Запуск"/>
+                            <Button Margin="5" Padding="20, 5" Content="Остановка"/>
+                        </UniformGrid>
+                        <ProgressBar DockPanel.Dock="Top" Margin="10"/>
+                    </DockPanel>
+                    <TextBlock VerticalAlignment="Center" 
+                                   HorizontalAlignment="Center" 
+                                   Text="{Binding DataValue}"
+                                   FontSize="30"/>
+                </DockPanel>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
