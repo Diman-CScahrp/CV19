@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -230,7 +231,11 @@ namespace CV19.ViewModels
         private static bool CanStartProcessCommandExecute(object p) => true;
         private void OnStartProcessCommandExecuted(object p)
         {
-            DataValue = _AsyncData.GetResult(DateTime.Now);
+            //DataValue = _AsyncData.GetResult(DateTime.Now);
+            new Thread(s =>
+            {
+                DataValue = _AsyncData.GetResult(DateTime.Now);
+            }).Start();
         }
         #endregion
 
