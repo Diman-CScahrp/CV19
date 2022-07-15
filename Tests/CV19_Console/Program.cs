@@ -15,6 +15,12 @@ namespace CV19_Console
             thread.Priority = ThreadPriority.AboveNormal;
             thread.Start(42);
 
+            var count = 5;
+            var msg = "Hello World!";
+            var timeout = 150;
+
+            new Thread(() => PrintMethod(msg, count, timeout)).Start();
+
             CheckThread();
 
             for (int i = 0; i < 100; i++)
@@ -24,6 +30,14 @@ namespace CV19_Console
             }
 
             Console.ReadLine();
+        }
+        private static void PrintMethod(string message, int count, int timeout)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Console.WriteLine(message);
+                Thread.Sleep(timeout);
+            }
         }
         private static void ThreadMethod(object parameter)
         {
