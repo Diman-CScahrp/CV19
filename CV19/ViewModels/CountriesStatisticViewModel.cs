@@ -3,7 +3,6 @@ using CV19.Models.CV19;
 using CV19.Services;
 using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,12 +54,9 @@ namespace CV19.ViewModels
         }
 
         #endregion
-        public CountriesStatisticViewModel(IDataService DataService)
+        public CountriesStatisticViewModel(IDataService service)
         {
-            _DataService = DataService;
-
-            var data = App.Host.Services.GetRequiredService<IDataService>();
-            
+            _DataService = service;
 
             #region Commands
 

@@ -1,12 +1,14 @@
 ﻿using CV19.Infrastructure.Commands;
 using CV19.Models;
 using CV19.Models.Decanat;
+using CV19.Services.Interfaces;
 using CV19.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -19,8 +21,51 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        #region DataValue
+
+        private string _DataValue;
+        public string DataValue
+        {
+            get => _DataValue;
+            private set => Set(ref _DataValue, value);
+        }
+
+        #endregion
+
+        #region Coefficient
+
+        private double _Coefficient = 1;
+
+        public double Coefficient
+        {
+            get => _Coefficient;
+            set => Set(ref _Coefficient, value);
+        }
+
+        #endregion
+
+        #region FuelCount
+
+        private double _FuelCount;
+        public double FuelCount
+        {
+            get => _FuelCount;
+            set => Set(ref _FuelCount, value);
+        }
+
+        #endregion
+
+        #region AsyncData
+
+        private readonly IAsyncDataService _AsyncData;
+
+        #endregion
+
+        #region CountriesStatistic
 
         public CountriesStatisticViewModel CountriesStatistic { get; set; }
+
+        #endregion
 
         #region SelectedDirectiory
 
@@ -181,6 +226,29 @@ namespace CV19.ViewModels
 
         #region Commands
 
+        #region StartProcessCommand
+        public ICommand StartProcessCommand { get; }
+        private static bool CanStartProcessCommandExecute(object p) => true;
+        private void OnStartProcessCommandExecuted(object p)
+        {
+            //DataValue = _AsyncData.GetResult(DateTime.Now);
+            new Thread(s =>
+            {
+                DataValue = _AsyncData.GetResult(DateTime.Now);
+            }).Start();
+        }
+        #endregion
+
+        #region StopProcessCommand
+        public ICommand StopProcessCommand { get; }
+        private static bool CanStopProcessCommandExecute(object p) => true;
+        private void OnStopProcessCommandExecuted(object p)
+        {
+
+        }
+        #endregion
+
+
         #region CloseApplicationCommand
         public ICommand CloseApplicationCommand { get; } 
         private void OnCloseApplicationCommandExecuted(object p)
@@ -237,9 +305,10 @@ namespace CV19.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(CountriesStatisticViewModel statistic)
+        public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService AsyncData)
         {
             CountriesStatistic = statistic;
+            _AsyncData = AsyncData;
             statistic.MainModel = this;
 
             #region Commands
@@ -248,6 +317,8 @@ namespace CV19.ViewModels
             ChangeTabIndexCommand = new LambdaCommand(OnChangeTabIndexCommandExecuted, OnChangeTabIndexCommandCanExecute);
             CreateGroupCommand = new LambdaCommand(OnCreateGroupCommandExecuted, CanCreateGroupCommandExecute);
             DeleteGroupCommand = new LambdaCommand(OnDeleteGroupCommandExecuted, CanDeleteGroupCommandExecute);
+            StartProcessCommand = new LambdaCommand(OnStartProcessCommandExecuted, CanStartProcessCommandExecute);
+            StopProcessCommand = new LambdaCommand(OnStopProcessCommandExecuted, CanStopProcessCommandExecute);
 
             #endregion
 
