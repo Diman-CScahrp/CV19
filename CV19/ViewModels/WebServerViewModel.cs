@@ -25,7 +25,7 @@ namespace CV19.ViewModels
         private bool CanStartCommandExecute(object p) => !_Enabled;
         private void OnStartCommandExecuted(object p)
         {
-            _Enabled = true;
+            Enabled = true;
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace CV19.ViewModels
         private bool CanStopCommandExecute(object p) => _Enabled;
         private void OnStopCommandExecuted(object p)
         {
-            _Enabled = false;
+            Enabled = false;
         }
 
         #endregion

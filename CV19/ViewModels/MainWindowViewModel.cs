@@ -21,6 +21,8 @@ namespace CV19.ViewModels
     {
         #region Properties
 
+        public WebServerViewModel WebServer { get; }
+
         #region DataValue
 
         private string _DataValue;
@@ -305,11 +307,12 @@ namespace CV19.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService AsyncData)
+        public MainWindowViewModel(CountriesStatisticViewModel statistic, IAsyncDataService AsyncData, WebServerViewModel WebServer)
         {
             CountriesStatistic = statistic;
             _AsyncData = AsyncData;
             statistic.MainModel = this;
+            this.WebServer = WebServer;
 
             #region Commands
 

@@ -39,18 +39,16 @@
                 </MenuItem>-->
                 <MenuItem Header="Выход" Command="{StaticResource CloseApplicationCommand}"/>
             </MenuItem>
+            <MenuItem Header="Сервис">
+                <MenuItem Header="Веб-сервер" DataContext="{Binding WebServer}">
+                    <MenuItem Header="Включён" IsChecked="{Binding Enabled}" IsCheckable="True"/>
+                    <Separator/>
+                    <MenuItem Header="Включить" Command="{Binding StartCommand}"/>
+                    <MenuItem Header="Выключить" Command="{Binding StopCommand}"/>
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе"/>
-            </MenuItem>
-            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="-1">
-                <MenuItem.Header>
-                    <fa:ImageAwesome Height="12" Icon="Regular_ArrowAltCircleLeft"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem Command="{Binding ChangeTabIndexCommand}" CommandParameter="1">
-                <MenuItem.Header>
-                    <fa:ImageAwesome Height="12" Icon="Regular_ArrowAltCircleRight"/>
-                </MenuItem.Header>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
