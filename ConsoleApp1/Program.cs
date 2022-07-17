@@ -4,42 +4,34 @@
     {
         public static void Main()
         {
-            Timer timer = new Timer();
-            timer.Tick = 2000;
-            timer.TimerCallBack += () =>
-            {
-                Console.Title = DateTime.Now.ToString();
-            };
-            timer.Start();
+            ManualResetEvent resetEvent = new ManualResetEvent(false);
+            List<string> tasks = new List<string>();
 
-            string msg = Console.ReadLine();
-            if (msg == "stop")
-                timer.Stop();
-        }
-    }
-    class Timer
-    {
-        public event Action TimerCallBack;
-        private bool isEnabled = true;
-        private Thread thread;
-        public int Tick { get; set; }
-
-        public void Start()
-        {
-            isEnabled = true;
-            thread = new Thread(() =>
+            Thread thread_addTask = new Thread(() =>
             {
-                while (isEnabled)
+                //
+                tasks.Add("new task");
+                resetEvent.Set();
+                Console.WriteLine("Sleeep 1");
+                Thread.Sleep(3000);
+                tasks.Add("one more task");
+                resetEvent.Set();
+                Console.WriteLine("Sleep 2");
+                Thread.Sleep(3000);
+                tasks.Add("old task");
+            });
+            thread_addTask.Start();
+
+            Thread thread_runTask = new Thread(() =>
+            {
+                while (true)
                 {
-                    Thread.Sleep(Tick);
-                    TimerCallBack.Invoke();
+                    resetEvent.WaitOne();
+                    Console.WriteLine(tasks.Last());
+                    resetEvent.Reset();
                 }
             });
-            thread.Start();
-        }
-        public void Stop()
-        {
-            isEnabled = false;
+            thread_runTask.Start();
         }
     }
 }
