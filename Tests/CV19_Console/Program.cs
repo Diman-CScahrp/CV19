@@ -7,15 +7,16 @@ namespace CV19_Console
 {
     internal class Program
     {
+        private static bool _ThreadUpdate = true;
         static void Main(string[] args)
         {
             Thread.CurrentThread.Name = "Main thread";
 
-            //var thread = new Thread(ThreadMethod);
-            //thread.Name = "Second thread";
-            //thread.IsBackground = true;
-            //thread.Priority = ThreadPriority.AboveNormal;
-            //thread.Start(42);
+            var clock_thread = new Thread(ThreadMethod);
+            clock_thread.Name = "Second thread";
+            clock_thread.IsBackground = true;
+            clock_thread.Priority = ThreadPriority.AboveNormal;
+            clock_thread.Start(42);
 
             //var count = 5;
             //var msg = "Hello World!";
@@ -34,28 +35,15 @@ namespace CV19_Console
             var values = new List<int>();
             var threads = new Thread[10];
 
-            object lock_obj = new object();
             for (int i = 0; i < threads.Length; i++)
             {
                 threads[i] = new Thread(() =>
                 {
                     for (int j = 0; j < 10; j++)
                     {
-                        lock (lock_obj)
-                            values.Add(Thread.CurrentThread.ManagedThreadId);
-                        Thread.Sleep(1);
+                        values.Add(Thread.CurrentThread.ManagedThreadId);
                     }
                 });
-            }
-
-            Monitor.Enter(lock_obj);
-            try
-            {
-
-            }
-            finally
-            {
-                Monitor.Exit(lock_obj);
             }
 
             foreach (var thread in threads)
@@ -66,14 +54,6 @@ namespace CV19_Console
             Console.WriteLine(string.Join(",", values));
             Console.ReadLine();
         }
-        private static void PrintMethod(string message, int count, int timeout)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                Console.WriteLine(message);
-                Thread.Sleep(timeout);
-            }
-        }
         private static void ThreadMethod(object parameter)
         {
             var value = (int)parameter;
@@ -81,9 +61,9 @@ namespace CV19_Console
 
             CheckThread();
 
-            while (true)
+            while (_ThreadUpdate)
             {
-                Thread.Sleep(2000);
+                Thread.Sleep(100);
 
                 Console.Title = DateTime.Now.ToString();
             }
