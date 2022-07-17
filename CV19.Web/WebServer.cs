@@ -6,5 +6,6 @@ namespace CV19.Web
 {
     internal class WebServer
     {
+
     }
 }
