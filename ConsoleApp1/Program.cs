@@ -1,31 +1,23 @@
 ﻿namespace OP
 {
+    public class RequestReceiverEventArgs : EventArgs 
+    {
+        public string Name { get; set; }
+    }
     class Program
     {
         public static void Main()
         {
-            List<int> ints = new List<int>();
-            Thread[] threads = new Thread[10];
-            for (int i = 0; i < threads.Length; i++)
-            {
-                threads[i] = new Thread(() =>
-                {
-                    for (int j = 0; j < 10; j++)
-                    {
-                        Thread.Sleep(10);
-                        ints.Add(Thread.CurrentThread.ManagedThreadId);
-                    }
-                });
-            }
-
-            foreach (var item in threads)
-            {
-                item.Start();
-            }
-
-            Console.ReadLine();
-            Console.WriteLine(String.Join(",", ints));
-            Console.ReadLine();
+            Server server = new Server();
+            server.RequestReceiver += Server_RequestReceiver;
         }
+
+        private static void Server_RequestReceiver(object? sender, RequestReceiverEventArgs e)
+        {
+        }
+    }
+    class Server 
+    {
+        public event EventHandler<RequestReceiverEventArgs> RequestReceiver;
     }
 }
