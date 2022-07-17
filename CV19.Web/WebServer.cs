@@ -6,9 +6,9 @@ using System.Text;
 
 namespace CV19.Web
 {
-    internal class WebServer
+    public class WebServer
     {
-        private event EventHandler<RequestReceiverEventArgs> RequestReceiver;
+        public event EventHandler<RequestReceiverEventArgs> RequestReceiver;
         //private TcpListener _Listener = new TcpListener(new IPEndPoint(IPAddress.Any, 8000));
         private HttpListener _Listener;
         private readonly int _Port;
@@ -25,8 +25,8 @@ namespace CV19.Web
             {
                 if (_Enabled) return;
                 _Listener = new HttpListener();
-                _Listener.Prefixes.Add($"http://*:{_Port}");
-                _Listener.Prefixes.Add($"http://+:{_Port}");
+                _Listener.Prefixes.Add($"http://*:{_Port}/");
+                _Listener.Prefixes.Add($"http://+:{_Port}/");
                 _Enabled = true;
             }
             ListenAsync();
